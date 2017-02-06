@@ -1,0 +1,158 @@
+{% load static from staticfiles %}
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+
+    <title>QuaAir </title>
+
+    <!-- Bootstrap CSS-->
+    {% block css %}
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/css/main.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'assets/css/my-custom-styles.css' %}" rel="stylesheet" type="text/css">
+    {% endblock %}
+    {% block js %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="{% static 'js/trumbowyg/dist/trumbowyg.min.js' %}"></script>
+    {% endblock %}
+    <!--[if lte IE 9]>
+		<link href="{% static 'assets/css/main-ie.css' %}" rel="stylesheet" type="text/css"/>
+		<link href="{% static 'assets/css/main-ie-part2.css' %}" rel="stylesheet" type="text/css"/>
+	<![endif]-->
+
+
+
+
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" />
+	<link href="{% static 'css/coming-sssoon.css' %}" rel="stylesheet" />
+
+    <!--     Fonts     -->
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Grand+Hotel' rel='stylesheet' type='text/css'>
+
+</head>
+
+<body>
+<nav class="navbar navbar-transparent navbar-fixed-top" role="navigation">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <div style="margin-top: -50px;">
+	<ul class="nav navbar-nav">
+         <li>
+              <a href="{% url 'index' %}">
+				<h1 class="logo cursive">
+						QuaAir
+				</h1>
+              </a>
+         </li>
+	
+      </ul>
+</div>
+        </div><!-- /.navbar-collapse -->
+  </div><!-- /.container -->
+</nav>
+<div class="main" style="background-image: url({% static 'img/default.jpg' %})">
+
+<!--    Change the image source '/images/default.jpg' with your favourite image.     -->
+
+    <div class="cover black" data-color="black"></div>
+
+<!--   You can change the black color for the filter with those colors: blue, green, red, orange       -->
+
+    <div class="container">
+			
+
+        <div class="content">
+            <h4 class="motto">Real Time Air Quality Monitoring</h4>
+                <div class="row" style="margin-top: -50px;">
+                    <center>
+   <table border="1" width="95%" style="color:white" cellpadding="10" cellspacing="0">
+      <tbody><tr>
+         <td width="15%" align="center"><b>AQI Range</b></td>
+         <td width="15%" align="center"><b>Color Scale</b></td>
+         <td width="15%" align="center"><b>Color Descriptor</b></td>
+         <td align="center"><b>Air Quality Health Advisory</b></td>
+      </tr>
+      <tr>
+         <td align="center">0 to 50</td>
+         <td align="center">Green</td>
+         <td align="center" bgcolor="#00BB00">Good</td>
+         <td>It’s a great day to be active outside.</td>
+      </tr>
+      <tr>
+         <td align="center">51 to 100</td>
+         <td align="center">Green</td>
+         <td align="center" bgcolor="#00BB00">Moderate</td>
+         <td><b>Unusually sensitive people:</b> Consider reducing prolonged or heavy exertion. Watch for symptoms such as coughing or shortness of breath. These are signs to take it easier.<br>
+<b>Everyone else:</b> It’s a good day to be active outside.</td>
+      </tr>
+      <tr>
+         <td align="center">101 to 150</td>
+         <td align="center">Green</td>
+         <td align="center" bgcolor="#00BB00">Unhealthy for Sensitive Groups</td>
+         <td><b>Sensitive groups:</b> Reduce prolonged or heavy exertion. It’s OK to be active outside, but take more breaks and do less intense activities. Watch for symptoms such as coughing or shortness of breath.<br>
+<b>People with asthma</b> should follow their asthma action plans and keep quick relief medicine handy.<br>
+<b>If you have heart disease:</b> Symptoms such as palpitations, shortness of breath, or unusual fatigue may indicate a serious problem. If you have any of these, contact your heath care provider.</td>
+      </tr>
+      <tr>
+      <td align="center">151 to 300</td>
+         <td align="center">Yellow</td>
+         <td align="center" bgcolor="#FFFF66" style="color:black">Unhealthy</td>
+         <td><b>Sensitive groups:</b> Avoid prolonged or heavy exertion. Move activities indoors or reschedule to a time when the air quality is better.<br>
+<b>Everyone else:</b> Reduce prolonged or heavy exertion. Take more breaks during all outdoor activities.</td>
+      </tr>
+      <tr>
+         <td align="center">300 to 350</td>
+         <td align="center">Yellow</td>
+         <td align="center" bgcolor="#FFFF66" style="color:black">Very Unhealthy</td>
+         <td><b>Sensitive groups:</b> Avoid all physical activity outdoors. Move activities indoors or reschedule to a time when air quality is better.<br>
+<b>Everyone else:</b> Avoid prolonged or heavy exertion. Consider moving activities indoors or rescheduling to a time when air quality is better.</td>
+      </tr>
+      <tr>
+         <td align="center">Over 350</td>
+         <td align="center">Red</td>
+         <td align="center" bgcolor="#FF0000"><br>Hazardous<br><br></td>
+         <td><b>Everyone:</b> Avoid all physical activity outdoors.</td>
+      </tr>
+   </tbody></table>
+</center>
+                </div>
+        </div>
+    </div>
+<div style="padding-top: 50px; postion: absolute"> <table width="60%" border="1" cellpadding="10" cellspacing="0" align="center">
+      <tbody><tr bgcolor="#D0F7F7">
+      
+      <td><h3 style="font-weight:bold; color:#005E9E">&nbsp;&nbsp;Key Facts to Know About Particle Pollution:</h3>
+    <ul>
+    <li>Particle pollution can cause serious health problems – including asthma attacks, heart attacks, strokes and early death.<br><br></li>
+    <li>Particle pollution can be a problem at any time of the year, depending on where you live.  <br><br></li>
+     <br><br></li>
+     </ul> 
+</td>
+</tr>
+</tbody></table></div>
+ </div>
+
+
+ </body>
+   <script src="{% static 'js/jquery-1.10.2.js' %}" type="text/javascript"></script>
+   <script src="{% static 'js/bootstrap.min.js' %}" type="text/javascript"></script>
+
+</html>

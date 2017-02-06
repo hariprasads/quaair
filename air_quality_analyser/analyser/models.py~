@@ -1,0 +1,33 @@
+from django.db import models
+
+
+# Create your models here.
+class AirQuality(models.Model):
+
+    # ip
+    vehicle_id = models.CharField(max_length=200)
+
+    data_received_time = models.DateTimeField(null=True)
+
+    air_quality = models.CharField(max_length=100, null=True)
+
+    location_zipcode = models.CharField(max_length=100, null=True)
+
+    def __unicode__(self):
+        return unicode(self.vehicle_id)
+
+    class Meta:
+        app_label = 'analyser'
+
+
+class UserAirQualityData(models.Model):
+
+    location_zipcode = models.CharField(max_length=100, null=True)
+
+    air_quality = models.CharField(max_length=100, null=True)
+
+    def __unicode__(self):
+        return unicode(self.location_zipcode)
+
+    class Meta:
+        app_label = 'analyser'

@@ -1,0 +1,156 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuaAir - Dashboard</title>
+
+	<link href="{% static 'new/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'new/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <!--<link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css" /> -->
+   	<link href="{% static 'new/css/local.css' %}" rel="stylesheet" type="text/css">
+	<!--<link rel="stylesheet" type="text/css" href="css/local.css" />-->
+
+    <script type="text/javascript" src="{% static 'new/js/jquery-1.10.2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'new/js/bootstrap.min.js"></script>
+
+    <!-- you need to include the shieldui css and js assets in order for the charts to work -->
+    <link rel="stylesheet" type="text/css" href="http://www.shieldui.com/shared/components/latest/css/shieldui-all.min.css" />
+    <link rel="stylesheet" type="text/css" href="http://www.shieldui.com/shared/components/latest/css/light-bootstrap/all.min.css" />
+    <script type="text/javascript" src="http://www.shieldui.com/shared/components/latest/js/shieldui-all.min.js"></script>
+    <script type="text/javascript" src="http://www.prepbootstrap.com/Content/js/gridData.js"></script>
+</head>
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href= "{% url 'index' %}">QuaAir</a>
+            </div>
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li><a href = "{% url 'index' %}"><i class="fa fa-bullseye"></i> Dashboard</a></li>
+                    <li class="active"><a href="{% url 'sensors' %}"><i class="fa fa-cube"></i> Sensors</a></li>
+                    <li><a href="{% url 'routes' %}"><i class="fa fa-globe"></i> Route</a></li>
+                    <li><a a href="{% url 'vehicles' %}"><i class="fa fa-bus"></i > Vehicles</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right navbar-user">
+
+                    <li class="dropdown user-dropdown">
+                        {% if user.is_authenticated %}
+							<li class="" id="user-info">
+
+										<a href="{% url 'logout' %}">
+											<span class="glyphicon glyphicon-log-out"></span>
+											<span class="text">Logout</span>
+										</a>
+							</li>
+						{% else %}
+							<li id="user-info">
+								<a href="{% url 'login' %}">Login</a>
+							</li>
+						{% endif %}
+
+                   </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"></i>  Sensor List</h3>
+                        </div>
+                        <div class="panel-body">
+
+		<a href="{% url 'add_sensor' %}" class="btn btn-info" role="button">Add Sensor</a>
+		<div class="row">
+			<table class="table">
+		    <thead>
+		      <tr>
+				  <th>Sensor Id</th>
+				  <th>Type</th>
+				  <th>Status</th>
+				  <th>Vehicle</th>
+				  <th></th>
+		       <!-- <th>Email</th> -->
+		      </tr>
+		    </thead>
+		    <tbody>
+				{% if sensors %}
+					{% for sensor in sensors %}
+						{% if sensor.sensor_status == "Active" %}
+		      				<tr class="success">
+						{% elif sensor.sensor_status == "InActive" %}
+							<tr class="warning">
+						{% else %}
+							<tr class="danger">
+						{% endif %}
+								<td>{{ sensor.sensor_id }}</td>
+								<td>{{ sensor.sensor_type }}</td>
+								<td>{{ sensor.sensor_status }}</td>
+								<td>{{ sensor.vehicle }}</td>
+                                <td>
+                                    <form role="form" action="{% url 'remove_sensor' %}" method="post">{% csrf_token %}
+                                        <input type="hidden" id="removesensor-{{ sensor.sensor_id }}" name="sensor_id" value="{{ sensor.sensor_id }}">
+                                        <button type="submit" class="btn btn-default btn-block" style="float:left; width:35%;"> Delete </button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <a href="{% url 'update_sensor' sensor_id={{ sensor.sensor_id }} %}" id="edit" type="button"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</a>
+                                </td>
+		      				</tr>
+					{% endfor %}
+				{% endif %}
+		    </tbody>
+		  </table>  
+		</div>
+		</div>
+
+	</div>
+
+<!-- Display status message (Modal) -->
+<div class="modal fade" id="message-modal" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+        <div class="modal-content">
+            {% if success == "True" %}
+            <div class="modal-header" style="padding:10px 20px;background-color: #5cb85c;">
+            {% else %}
+            <div class="modal-header" style="padding:10px 20px;background-color:#d9534f;">
+            {% endif %}
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                {% if success == "True" %}
+                    <h4 class="modal-title" style="background-color: #5cb85c;"><span class="glyphicon glyphicon-ok-circle"></span> Message </h4>
+                {% else %}
+                    <h4 class="modal-title" style="background-color:#d9534f;"><span class="glyphicon glyphicon-remove-circle"></span> Message </h4>
+                {% endif %}
+            </div>
+            <div class="modal-body" style="padding:40px 50px;">
+                <p>{{ message|safe }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-info btn-default center-block" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if message %}
+    <script type="text/javascript">
+    $(window).load(function(){
+        $('#message-modal').modal('show');
+    });
+</script>
+{% endif %}
+
+</body>
+</html>

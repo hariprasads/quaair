@@ -1,0 +1,210 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<!--[if IE 9 ]><html class="ie ie9" lang="en" class="no-js"> <![endif]-->
+<!--[if !(IE)]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+
+<head>
+    <title>{% block title %}Dashboard | vRealize System Test{% endblock %}</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="description" content="vRealize System Test Portal">
+	<meta name="author" content="Harish Umashankar">
+
+    <!-- Bootstrap CSS-->
+    {% block css %}
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/css/main.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'assets/css/my-custom-styles.css' %}" rel="stylesheet" type="text/css">
+    {% endblock %}
+    {% block js %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="{% static 'js/trumbowyg/dist/trumbowyg.min.js' %}"></script>
+    {% endblock %}
+    <!--[if lte IE 9]>
+		<link href="{% static 'assets/css/main-ie.css' %}" rel="stylesheet" type="text/css"/>
+		<link href="{% static 'assets/css/main-ie-part2.css' %}" rel="stylesheet" type="text/css"/>
+	<![endif]-->
+
+	<!-- Fav and touch icons -->
+	<link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+
+</head>
+
+<body class="dashboard">
+    <!-- WRAPPER -->
+	<div class="wrapper">
+		<!-- TOP BAR -->
+        <nav class="navbar navbar-default" style="margin-bottom:0px">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					  <span class="sr-only">Toggle navigation</span>
+					  <span class="icon-bar"></span>
+					  <span class="icon-bar"></span>
+					  <span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#"><img src="{% static 'img/vmware_logo.png' %}" class="logo"> </a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li><a href="http://10.143.120.245">vRealize Operations Manager v6.1<span class="sr-only">(current)</span></a></li>
+                        <li class="active"><a href="{% url 'index' %}">vRealize Automation<span class="sr-only">(current)</span></a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						{% if user.is_authenticated %}
+							<li class="" id="user-info">
+								<a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+									{{ user.username }}
+									<span class="caret"></span>
+								</a>
+								<ul class="dropdown-menu" role="menu">
+									{% if user.is_superuser %}
+										<li>
+											<a href="{% url 'registerUser' %}">
+												<span class="glyphicon glyphicon-plus"></span>
+												<span class="text">Add User</span>
+											</a>
+										</li>
+									{% endif %}
+									<li>
+										<a href="{% url 'logout' %}">
+											<span class="glyphicon glyphicon-log-out"></span>
+											<span class="text">Logout</span>
+										</a>
+									</li>
+								</ul>
+							</li>
+						{% else %}
+							<li id="user-info">
+								<a href="{% url 'login' %}">Login</a>
+							</li>
+						{% endif %}
+					</ul>
+				</div><!--/.nav-collapse -->
+			</div><!--/.container-fluid -->
+		</nav>
+
+        <!-- /top -->
+		<div class="clearfix"></div>
+		<!-- BOTTOM: LEFT NAV AND RIGHT MAIN CONTENT -->
+		<div class="bottom">
+			<div class="container">
+				<div class="row">
+					<!-- left sidebar -->
+					{% block left-nav-width %}
+					<div class="col-md-1 left-sidebar">
+					{% endblock %}
+						<!-- main-nav -->
+						<nav class="main-nav">
+							<ul class="main-menu">
+								{% block left-sidebar %}
+								<li class="active">
+									<a href="{% url 'index' %}">
+										<i class="fa fa-dashboard fa-fw"></i><span class="text">Dashboard</span>
+									</a>
+								</li>
+								<li>
+									<a href="{% url 'scaleIndex' %}">
+										<i class="fa fa-line-chart"></i><span class="text">Scale</span>
+									</a>
+								</li>
+                                {% endblock %}
+							</ul>
+						</nav>
+						<!-- /main-nav -->
+						<div class="sidebar-minified js-toggle-minified">
+							<i class="fa fa-angle-left"></i>
+						</div>
+					</div>
+                    <!-- end left sidebar -->
+					<!-- content-wrapper -->
+					{% block main-content-width %}
+					<div class="col-md-11 content-wrapper">
+					{% endblock %}
+						<div class="col-md-12" style="height: 30px;padding:0;border-bottom: 1px solid #ddd;background-color:#ececec;">
+							<ul class="breadcrumb" style="height:29px;padding-left:3px;">
+								{% block breadcrumb %}
+								<li class="active"><i class="fa fa-dashboard fa-fw"></i>Dashboard</li>
+								{% endblock %}
+							</ul>
+
+						</div>
+						<!-- main -->
+						<div class="content main-content col-md-12">
+							<div class="">
+                            {% block content %}
+
+                            {% endblock %}
+                        </div>
+                        <!-- /main-content -->
+						</div>
+						<!-- /main -->
+					</div>
+					<!-- /content-wrapper -->
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- END BOTTOM: LEFT NAV AND RIGHT MAIN CONTENT -->
+	</div>
+	<!-- /wrapper -->
+
+	<!-- FOOTER -->
+	<footer class="footer">
+		&copy; 2015 VMware
+	</footer>
+	<!-- END FOOTER -->
+
+	<!-- Javascript -->
+	<script src="{% static 'assets/js/jquery/jquery-2.1.0.min.js' %}"></script>
+	<script src="{% static 'assets/js/bootstrap/bootstrap.js' %}"></script>
+	<script src="{% static 'assets/js/plugins/modernizr/modernizr.js' %}"></script>
+	<script src="{% static 'assets/js/plugins/bootstrap-tour/bootstrap-tour.custom.js' %}"></script>
+	<script src="{% static 'assets/js/king-common.js' %}"></script>
+	<script src="{% static 'assets/js/plugins/stat/jquery.easypiechart.min.js' %}"></script>
+	<script src="{% static 'assets/js/plugins/raphael/raphael-2.1.0.min.js' %}"></script>
+	<script src="{% static 'assets/js/plugins/stat/flot/jquery.flot.min.js' %}"></script>
+	<script src="{% static 'assets/js/plugins/stat/flot/jquery.flot.resize.min.js' %}"></script>
+	<script src="{% static 'assets/js/plugins/stat/flot/jquery.flot.time.min.js' %}"></script>
+	<script src="{% static 'assets/js/plugins/stat/flot/jquery.flot.pie.min.js' %}"></script>
+	<script src="{% static 'assets/js/plugins/stat/flot/jquery.flot.tooltip.min.js' %}"></script>
+	<script src="{% static 'assets/js/plugins/jquery-sparkline/jquery.sparkline.min.js' %}"></script>
+	<script src="{% static 'assets/js/plugins/datatable/jquery.dataTables.min.js' %}"></script>
+	<script src="{% static 'assets/js/plugins/datatable/dataTables.bootstrap.js' %}"></script>
+	<script src="{% static 'assets/js/plugins/jquery-mapael/jquery.mapael.js' %}"></script>
+	<script src="{% static 'assets/js/plugins/raphael/maps/usa_states.js' %}"></script>
+	<script src="{% static 'assets/js/king-chart-stat.js' %}"></script>
+	<script src="{% static 'assets/js/king-table.js' %}"></script>
+	<script src="{% static 'assets/js/king-components.js' %}"></script>
+	<script>
+        $(document).ready(function(){
+            $('a[href="#"]').click(function(e){
+                e.preventDefault();
+            });
+            $('html').on('click', function (e) {
+                if ($(e.target).data('toggle') !== 'popover'
+                    && $(e.target).parents('.popover.in').length === 0) {
+                    $('[data-toggle="popover"]').popover('hide');
+                }
+            });
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+	<script>
+		var selector = '.main-menu li';
+		$(selector).on('click', function(){
+			$(selector).removeClass('active');
+			$(this).addClass('active');
+		});
+	</script>
+	{% block trailing-js %}
+	{% endblock %}
+
+</body>
+
+</html>

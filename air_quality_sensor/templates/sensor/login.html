@@ -1,0 +1,60 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuaAir - Dashboard</title>
+
+	<link href="{% static 'new/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'new/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <!--<link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css" /> -->
+   	<link href="{% static 'new/css/local.css' %}" rel="stylesheet" type="text/css">
+	<!--<link rel="stylesheet" type="text/css" href="css/local.css" />-->
+
+    <script type="text/javascript" src="{% static 'new/js/jquery-1.10.2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'new/js/bootstrap.min.js"></script>
+
+    <!-- you need to include the shieldui css and js assets in order for the charts to work -->
+    <link rel="stylesheet" type="text/css" href="http://www.shieldui.com/shared/components/latest/css/shieldui-all.min.css" />
+    <link rel="stylesheet" type="text/css" href="http://www.shieldui.com/shared/components/latest/css/light-bootstrap/all.min.css" />
+    <script type="text/javascript" src="http://www.shieldui.com/shared/components/latest/js/shieldui-all.min.js"></script>
+    <script type="text/javascript" src="http://www.prepbootstrap.com/Content/js/gridData.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="panel panel-default" style="max-width:30%;margin-left:auto; margin-right:auto;">
+            <div class="panel-body">
+                <legend>User Login</legend>
+                {% if form.errors %}
+                    <p>Your username and password didn't match. Please try again.</p>
+                {% endif %}
+                {% if next %}
+                    {% if user.is_authenticated %}
+                        <p>Your account doesn't have access to this page. To proceed,
+                        please login with an account that has access.</p>
+                    {% else %}
+                        <p>Please login to see this page.</p>
+                    {% endif %}
+                {% endif %}
+                <form role="form" action="{% url 'django.contrib.auth.views.login' %}" method="post">{% csrf_token %}
+                <div class="form-group">
+                    <label for="addUser-username"><span class="glyphicon glyphicon-user"></span> Username </label>
+                    <input type="text" class="form-control" id="addUser-username" name="username" placeholder="" aria-required="true" />
+                </div>
+                <div class="form-group">
+                    <label for="addUser-password"><span class="glyphicon glyphicon-eye-open"></span> Password </label>
+                    <input type="password" class="form-control" id="addUser-password" name="password" placeholder="">
+                </div>
+                    <input type="hidden" id="addUser-redirect" name="next" value="{{ next }}">
+                    <button id="btnSubmit" type="submit" class="btn-info"> Submit </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

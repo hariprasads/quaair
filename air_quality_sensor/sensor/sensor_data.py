@@ -1,0 +1,111 @@
+__author__ = 'hanumesh'
+
+# from sensor.models import *
+import requests
+from random import randint
+from datetime import datetime
+from collections import OrderedDict
+import json
+from celery import task, group, Celery
+from models import Vehicle, Route, Sensors
+
+app = Celery('portal')
+
+
+def run_update_content():
+    """
+    """
+    vehicle_list = Vehicle.objects.all()
+    for vehicle in vehicle_list:
+        air_quality_data.apply_async(args=[vehicle, ], queue='periodical')
+
+
+def run_update_current_location():
+    """
+    """
+    vehicle_list = Vehicle.objects.all()
+    for vehicle in vehicle_list:
+        vehicle_current_location.apply_async(args=[vehicle, ], queue='periodical')
+
+
+@app.task()
+def air_quality_data(vehicle_instance):
+
+    available_sensors = Sensors.objects.filter(vehicle=vehicle_instance)
+
+    are_sensors_active = False
+    if len(available_sensors) == 2:
+        are_sensors_active = True
+        for available_sensor in available_sensors:
+            if available_sensor.sensor_status != "Active":
+                are_sensors_active = False
+
+    if are_sensors_active:
+        location = vehicle_instance.current_location
+        air_quality_value = str(randint(50, 450))
+        current_time = str(datetime.now())
+
+        data = format_json_data(vehicle_instance.id, location, current_time, air_quality_value)
+
+        post_request("http://harish:usopen123@52.33.76.18:8000/analyser/air_quality/", data)
+
+
+def check_put_response_code(res):
+    print res.status_code
+    accepted_response_code = [200, 201, 204]
+    if not res.status_code in accepted_response_code:
+        return False
+    else:
+        return True
+
+
+def post_request(url, data_json):
+    headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+    }
+
+    print url
+    message = ""
+    res = requests.post(url=url, headers=headers, data=data_json, verify=False)
+    success = check_put_response_code(res)
+
+    return res, success
+
+
+def format_json_data(id, location, current_time, air_quality_value):
+    data = json.dumps(
+        OrderedDict([("vehicle_id", id), ("data_received_time", current_time), ("air_quality", air_quality_value),
+                     ("location_zipcode", location)]))
+
+    return data
+
+
+@app.task()
+def vehicle_current_location(vehicle_instance):
+
+    location = vehicle_instance.current_location
+
+    route_instance = Route.objects.get(route_id=vehicle_instance.route)
+
+    vehicle_route = []
+    vehicle_route = route_instance.zipcode.split(",")
+    route_end = len(vehicle_route) - 1
+
+    print vehicle_route
+
+    idx = vehicle_route.index(location)
+    print idx
+
+    from random import randint
+
+    if randint(0, 3) != 0:
+        if idx == route_end:
+            idx = 0
+        else:
+            idx += 1
+
+    location = vehicle_route[idx]
+
+    vehicle_instance.current_location = location
+    vehicle_instance.save()

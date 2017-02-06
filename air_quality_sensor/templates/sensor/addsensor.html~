@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <!--<style >
+    .mainbody{
+        background-image: url("http://news.xinhuanet.com/english/photo/2013-01/13/132099999_11n.jpg");
+
+    }
+</style> -->
+      <div class="mainbody">
+          <div class="container">
+              <ol class = "breadcrumb">
+                  <li><a href = "{% url 'index' %}">Home</a></li>
+                  <li><a href = "#">Configure</a></li>
+                  <li><a href = "{% url 'sensors' %}"> Sensor </a></li>
+                  <li class ="active">Add Sensor </li>
+              </ol>
+              <h2>Add Sensor</h2>
+              <form role="form" action="{% url 'add_sensor' %}" method="post">{% csrf_token %}
+                  <div class="form-group">
+                      <label for="addsensor-sensor_id">Sensor ID:</label>
+                      <input type="text" class="form-control" id="addsensor-sensor_id" name="sensor_id" placeholder="Enter Sensor ID" required>
+                  </div>
+                  <label for="addsensor-type">Sensor Type:</label>
+                  <select class="form-group" id="addsensor-type" name="type" >
+                      <option value="GPS">GPS</option>
+                      <option value="AirQuality">AirQuality</option>
+                  </select>
+                  <label for="addsensor-status">Sensor Status:</label>
+                  <select class="form-group" id="addsensor-status" name="status" >
+                      <option value="Active">Active</option>
+                      <option value="InActive">InActive</option>
+                  </select>
+                  <label for="addsensor-vehicle">Vehicle: </label>
+                  <select class="form-group" id="addsensor-vehicle" name="vehicle" >
+                        {% for vehicle in vehicles %}
+                        <option value="{{ vehicle.id }}">{{ vehicle.id }}</option>
+                        {%  endfor %}
+                  </select>
+                  <div class="click">
+                      <button type="submit" class="btn btn-success">Done !</button>
+                      <button type="reset" class="btn btn-danger">Clear</button
+                  </div>
+            </form>
+          </div>
+      </div>
+</body>
+</html>
